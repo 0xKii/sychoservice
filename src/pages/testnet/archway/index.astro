@@ -4,63 +4,35 @@ import { getCanonical, getHomePermalink } from '~/utils/permalinks';
 import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon';
 
-const name= 'Archway';
-const icon= 'archway';
-const network= 'Testnet';
-const chain= 'constantine-3';
-const version= 'v0.5.2';
-const stake= 'https://explorer.indonode.net/archway-testnet/staking/archwayvaloper10tlgmg3f8zgan5gtsnhtcn4n0c06pjk0n72xrd';
-const meta = {
-	title: SITE.title,
-	description: SITE.description,
-	canonical: getCanonical(getHomePermalink()),
-};
+const name= 'Archway'; 
+ const icon= 'archway'; 
+ const network= 'Testnet'; 
+ const chain= 'constantine-3'; 
+ const version= 'v0.5.2'; 
+ const stake= '#'; 
+ const meta = { 
+         title: SITE.title, 
+         description: SITE.description, 
+         canonical: getCanonical(getHomePermalink()), 
+ };
 
 const items = [
 	{
-		title: 'Addrbook',
-		Link: 'https://indonode.net/testnet/archway/addrbook',
-	},
-	{
-		title: 'API Endpoints',
-		Link: 'https://indonode.net/testnet/archway/api',
-	},
-	{
 		title: 'Explorer',
-		Link: 'https://explorer.indonode.net/archway-testnet',
-	},
-	{
-		title: 'Genesis file',
-		Link: 'https://indonode.net/testnet/archway/genesis',
-	},
-	{
-		title: 'gRPC Endpoints',
-		Link: 'https://indonode.net/testnet/archway/grpc',
+		Link: 'https://service.sychonix.me/andromeda-testnet',
 	},
 	{
 		title: 'Node installation',
-		Link: 'https://indonode.net/testnet/archway/installation',
+		Link: 'https://service.sychonix.me/testnet/andromeda/installation',
 	},
 	{
 		title: 'Peers',
-		Link: 'https://indonode.net/testnet/archway/peers',
-	},
-	{
-		title: 'RPC Endpoints',
-		Link: 'https://indonode.net/testnet/archway/rpc',
+		Link: 'https://service.sychonix.me/testnet/andromeda/peers',
 	},
 	{
 		title: 'Statesync',
-		Link: 'https://indonode.net/testnet/archway/statesync',
+		Link: 'https://service.sychonix.me/testnet/andromeda/statesync',
 	},
-	{
-		title: 'Snapshot',
-		Link: 'https://indonode.net/testnet/archway/snapshot',
-	},
-	{
-		title: 'CLI Cheatsheet',
-		Link: 'https://indonode.net/testnet/archway/cheat',
-	},		
 ]	
 ---
 
