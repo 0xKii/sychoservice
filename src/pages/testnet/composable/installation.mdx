@@ -7,174 +7,100 @@ chain: banksy-testnet-2
 version: v2.3.2
 ---
 
-### Hardware requirements
-
-The following requirements are recommended
-
-- 4 or more physical CPU cores
-- At least 200GB of SSD disk storage
-- At least 8GB of memory (RAM)
-- At least 100mbps network bandwidth
-
-
-### Install dependencies Required
-
+### Install Dependencies
 ```
-sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
 ```
 
-### Install go
-
-We are gonna use GO Version 1.20.4
-If you already have GO installed you can skip this 
-
+### Install Go
 ```
-ver="1.20.4"
-cd $HOME
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
-sudo rm -rf /usr/local/go
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
-rm "go$ver.linux-amd64.tar.gz"
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
-source ~/.bash_profile
+ver="1.19" && \
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
+sudo rm -rf /usr/local/go && \
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
+rm "go$ver.linux-amd64.tar.gz" && \
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile && \
+source $HOME/.bash_profile && \
 go version
 ```
 
-### Install binary
-
+### Download and build binaries
 ```
 cd $HOME
-rm -rf composable-testnet
 git clone https://github.com/notional-labs/composable-testnet.git
 cd composable-testnet
-git checkout v2.3.2
-make build
+git checkout v2.3.3-testnet2fork
+make install
+banksyd version --long
 ```
 
-### Prepare Cosmovisor
+### Initialize the node
 ```
-mkdir -p $HOME/.banksy/cosmovisor/genesis/bin
-mv bin/banksyd $HOME/.banksy/cosmovisor/genesis/bin/
-rm -rf bin/
-
-
-sudo ln -s $HOME/.banksy/cosmovisor/genesis $HOME/.banksy/cosmovisor/current
-sudo ln -s $HOME/.banksy/cosmovisor/current/bin/banksyd /usr/local/bin/banksyd
-```
-
-Verify that you've installed banksyd successfully
-
-```
-banksyd version
-```
-
-### Install Cosmovisor
-```
-go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
-```
-
-### Config app
-
-```
+banksyd init <your_moniker> --chain-id banksy-testnet-2
 banksyd config chain-id banksy-testnet-2
 banksyd config keyring-backend test
 ```
 
-### Initialize Node
-
-Please change `<YOUR_MONIKER>` To your own Moniker.
-
+### Custom Port
 ```
-banksyd init <YOUR_MONIKER> --chain-id banksy-testnet-2
+PORT=36
+banksyd config node tcp://localhost:${PORT}657
 ```
-
-### Download Genesis file and addrbook
-
-- Genesis
-
 ```
-curl -Ls https://snapshots.indonode.net/composable-t/genesis.json > $HOME/.banksy/config/genesis.json
+sed -i -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/.banksy/config/config.toml
+sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}317\"%; s%^address = \":8080\"%address = \":${PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}091\"%; s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:${PORT}545\"%; s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:${PORT}546\"%" $HOME/.banksy/config/app.toml
 ```
-
-- Addrbook
-
+Seed, Peer & Gas
 ```
-curl -Ls https://snapshots.indonode.net/composable-t/addrbook.json > $HOME/.banksy/config/addrbook.json
-```
-
-### Configure Seeds and Peers
-
-```
-PEERS="$(curl -sS https://rpc.composable-t.indonode.net/net_info | jq -r '.result.peers[] | "\(.node_info.id)@\(.remote_ip):\(.node_info.listen_addr)"' | awk -F ':' '{print $1":"$(NF)}' | sed -z 's|\n|,|g;s|.$||')"
-sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$PEERS\"|" $HOME/.banksy/config/config.toml
-```
-
-### Set Minimum Gas Prices
-
-```
+peers="bf95ad80f82320b8fefea75eeede60f563d1f847@168.119.91.22:26656,067f0f6f1706c4ef7da49b2896f28e194e8be055@96.234.160.22:30456,4775d0152d784b3ddf4f48c2d0ebddf961b52655@43.157.56.21:26656,d5519e378247dfb61dfe90652d1fe3e2b3005a5b@65.109.68.190:15956,f23a8daca1f65aeee7ce6f6d47a56542a08538c9@66.45.233.110:26656,13c29d1d66d604e8920ba0170276368e4e77f249@88.99.3.158:22256,4bf7484e2100e9da01180fff7055642263f34ccc@65.108.71.163:26656,4c1ea1da9fb0442201e79535d71f66a5e0e1e68c@51.91.30.173:3000,7ab89f884656a66ca90fd9d44489da3c6ca1fea4@95.217.144.107:22256,3172f3c8b62d31d4c6e69afbf6109d06f864d899@43.157.62.85:26656,c97dd69796a3f55fb00d92358ec34a8185e28212@5.9.79.121:49656"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.banksy/config/config.toml
 sed -i -e "s|^minimum-gas-prices *=.*|minimum-gas-prices = \"0upica\"|" $HOME/.banksy/config/app.toml
+SEEDS="20cda42604058d2ad0b21ef2b3cbad3feae81786@95.214.53.218:10656"
+sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/.banksy/config/config.toml
 ```
 
-### config pruning
-
+### Prunning
 ```
-PRUNING="custom"
-PRUNING_KEEP_RECENT="100"
-PRUNING_INTERVAL="19"
-
-sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.banksy/config/app.toml
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
-\"$PRUNING_KEEP_RECENT\"/" $HOME/.banksy/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
-\"$PRUNING_INTERVAL\"/" $HOME/.banksy/config/app.toml
+sed -i \
+-e 's|^pruning *=.*|pruning = "custom"|' \
+-e 's|^pruning-keep-recent *=.*|pruning-keep-recent = "100"|' \
+-e 's|^pruning-keep-every *=.*|pruning-keep-every = "0"|' \
+-e 's|^pruning-interval *=.*|pruning-interval = "19"|' \
+$HOME/.banksy/config/app.toml
 ```
 
-
-### create service file and start node
-
-Create service file
-Create a `banksyd.service` file in the `/etc/systemd/system` folder with the following code. 
-You can change `USER` with your Linux user name. You need sudo previlege to do this step.
-
+### Service
 ```
 sudo tee /etc/systemd/system/banksyd.service > /dev/null << EOF
 [Unit]
-Description=composable-tesnet node service
+Description=composable-testnet
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which cosmovisor) run start
+ExecStart=$(which banksyd) start
 Restart=on-failure
-RestartSec=10
+RestartSec=3
 LimitNOFILE=65535
-Environment="DAEMON_HOME=$HOME/.banksy"
-Environment="DAEMON_NAME=banksyd"
-Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
 WantedBy=multi-user.target
 EOF
+```
+
+#### Start
+```
 sudo systemctl daemon-reload
 sudo systemctl enable banksyd
-```
-
-### Download Latest Snapshot
-```
-curl -L https://snapshots.indonode.net/composable-t/composable-t-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.banksy
-[[ -f $HOME/.banksy/data/upgrade-info.json ]] && cp $HOME/.banksy/data/upgrade-info.json $HOME/.banksy/cosmovisor/genesis/upgrade-info.json
-```
-
-- Enable Service and Start Node
-
-```
 sudo systemctl restart banksyd
-sudo journalctl -fu banksyd -o cat
+sudo journalctl -u banksyd -f -o cat
 ```
+
 ### Create Validator
 
 Heads up to the Cheat Sheets to create validator
 
-<a href="https://www.indonode.net/testnet/composable/cheat" target="_blank">
+<a href="https://service.sychonix.me/testnet/composable/cheat" target="_blank">
   <button style="background-color: green; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 10px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);" onmouseover="this.style.boxShadow='0 0 0 4px rgba(0,255,0,0.5)'" onmouseout="this.style.boxShadow='0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'">CLI Cheatsheets</button>
 </a>
