@@ -4,63 +4,31 @@ import { getCanonical, getHomePermalink } from '~/utils/permalinks';
 import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon';
 
-const name= 'Composable';
-const icon= 'composable';
-const network= 'Testnet';
-const chain= 'banksy-testnet-2';
-const version= 'v2.3.2';
-const stake= 'https://explorer.indonode.net/composable-testnet/staking/banksyvaloper1mscy4p522n9qvzkd5feq3t0j4kvavw5xusjcj8';
-const meta = {
-	title: SITE.title,
-	description: SITE.description,
-	canonical: getCanonical(getHomePermalink()),
-};
+const name= 'Composable'; 
+ const icon= 'composable'; 
+ const network= 'Testnet'; 
+ const chain= 'banksy-testnet-2'; 
+ const version= 'v2.3.3-testnet2fork'; 
+ const stake= 'https://explorer.sychonix.me/composable-testnet-2/staking/banksyvaloper1z80je45vp9d3cn2j6k5cp2axfxfejxwlwp8dy2'; 
+ const meta = { 
+         title: SITE.title, 
+         description: SITE.description, 
+         canonical: getCanonical(getHomePermalink()),
+ };
 
 const items = [
 	{
-		title: 'Addrbook',
-		Link: 'https://indonode.net/testnet/composable/addrbook',
-	},
-	{
-		title: 'API Endpoints',
-		Link: 'https://indonode.net/testnet/composable/api',
-	},
-	{
 		title: 'Explorer',
-		Link: 'https://explorer.indonode.net/composable-testnet',
-	},
-	{
-		title: 'Genesis file',
-		Link: 'https://indonode.net/testnet/composable/genesis',
-	},
-	{
-		title: 'gRPC Endpoints',
-		Link: 'https://indonode.net/testnet/composable/grpc',
+		Link: 'https://explorer.sychonix.me/composable-testnet-2',
 	},
 	{
 		title: 'Node installation',
-		Link: 'https://indonode.net/testnet/composable/installation',
-	},
-	{
-		title: 'Peers',
-		Link: 'https://indonode.net/testnet/composable/peers',
-	},
-	{
-		title: 'RPC Endpoints',
-		Link: 'https://indonode.net/testnet/composable/rpc',
-	},
-	{
-		title: 'Statesync',
-		Link: 'https://indonode.net/testnet/composable/statesync',
-	},
-	{
-		title: 'Snapshot',
-		Link: 'https://indonode.net/testnet/composable/snapshot',
+		Link: 'https://service.sychonix.me/testnet/composable/installation',
 	},
 	{
 		title: 'CLI Cheatsheet',
-		Link: 'https://indonode.net/testnet/composable/cheat',
-	},		
+		Link: 'https://service.sychonix.me/testnet/composable/cheat',
+	},
 ]	
 ---
 
@@ -75,7 +43,7 @@ const items = [
 					</h1>
 					<a
 							class="btn bg-primary-400 w-1/4 items-center hover:bg-primary-400 font-bold md:pb-4"
-							href={stake}>Stake with us</a>
+							href={stake}>Stake with me</a>
 				</div>
 				<section class="bg-primary-100 dark:bg-slate-800 items-center">
 					<div class=" bg-transparent px-4 sm:px-6 py-4 text-md text-center font-medium">
