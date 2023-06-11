@@ -7,27 +7,18 @@ chain: blockx_12345-2
 version: 0.1.1-test
 ---
 
-### Hardware requirements
-
-The following requirements are recommended for running Defund:
-
-- 4 or more physical CPU cores
-- At least 200GB of SSD disk storage
-- At least 8GB of memory (RAM)
-- At least 100mbps network bandwidth
-
-
-### Install dependencies Required
-
+### Auto Install
 ```
-sudo apt update && sudo apt upgrade -y && sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
+wget -O auto.sh https://raw.githubusercontent.com/vinjan23/Testnet.Guide/main/Blockxd/auto.sh && chmod +x auto.sh && ./auto.sh
 ```
 
-### Install go
+### Update Package
+```
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
+```
 
-We are gonna use GO Version 1.19.5
-If you already have GO installed you can skip this 
-
+### GO
 ```
 ver="1.19.5"
 cd $HOME
@@ -40,134 +31,119 @@ source ~/.bash_profile
 go version
 ```
 
-### Install binary
-
+### Binary
 ```
-cd $HOME
-curl -LO https://snapshots.indonode.net/blockx-t/blockxd
+curl -LO https://github.com/defi-ventures/blockx-node-public-compiled/releases/download/v9.0.0/blockxd
 chmod +x blockxd
+sudo mv ./blockxd /usr/local/bin
 ```
 
-### Prepare Cosmovisor
+### Setup
 ```
-mkdir -p $HOME/.blockxd/cosmovisor/genesis/bin
-mv blockxd $HOME/.blockxd/cosmovisor/genesis/bin/
-rm -rf build
-
-
-sudo ln -s $HOME/.blockxd/cosmovisor/genesis $HOME/.blockxd/cosmovisor/current
-sudo ln -s $HOME/.blockxd/cosmovisor/current/bin/blockxd /usr/local/bin/blockxd
+MONIKER=Your_NODENAME 
 ```
 
-Verify that you've installed blockxd successfully
-
+### Config
 ```
-blockxd version
-```
-
-### Install Cosmovisor
-```
-
-go install cosmossdk.io/tools/cosmovisor/cmd/cosmovisor@v1.4.0
-```
-
-### Config app
-
-```
+blockxd init $MONIKER --chain-id blockx_12345-2
 blockxd config chain-id blockx_12345-2
 blockxd config keyring-backend test
 ```
 
-### Initialize Node
-
-Please change `<YOUR_MONIKER>` To your own Moniker.
-
 ```
-blockxd init <YOUR_MONIKER> --chain-id blockx_12345-2
+PORT=19
+blockxd config node tcp://localhost:${PORT}657
 ```
 
-### Download Genesis file and addrbook
-
-- Genesis
-
+### Custom Port
 ```
-curl -Ls https://snapshots.indonode.net/blockx-t/genesis.json > $HOME/.blockxd/config/genesis.json
+sed -i -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${PORT}658\"%; s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://127.0.0.1:${PORT}657\"%; s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${PORT}060\"%; s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${PORT}656\"%; s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${PORT}660\"%" $HOME/.blockxd/config/config.toml
+sed -i -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${PORT}317\"%; s%^address = \":8080\"%address = \":${PORT}080\"%; s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${PORT}090\"%; s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${PORT}091\"%; s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:${PORT}545\"%; s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:${PORT}546\"%" $HOME/.blockxd/config/app.toml
 ```
 
-- Addrbook
-
+### Genesis
 ```
-curl -Ls https://snapshots.indonode.net/blockx-t/addrbook.json > $HOME/.blockxd/config/addrbook.json
+wget -O $HOME/.blockxd/config/genesis.json "https://raw.githubusercontent.com/vinjan23/Testnet.Guide/main/Blockxd/genesis.json"
 ```
-
-
-### Configure Seeds and Peers
-
+### Addrbook
 ```
-sed -i 's/persistent_peers = \"\"/persistent_peers = \"4a7401f7d6daa39d331196d8cc179a4dcb11b5f9@143.198.110.221:26656,49a5a62543f5fec60db42b00d9ebe192c3185e15@143.198.97.96:26656,dccf886659c4afcb0cd4895ccd9f2804c7e7e1cd@143.198.101.61:26656\"/g' $HOME/.blockxd/config/config.toml
+wget -O $HOME/.blockxd/config/addrbook.json "https://raw.githubusercontent.com/vinjan23/Testnet.Guide/main/Blockxd/addrbook.json"
 ```
 
-### config pruning
-
+### Peer
 ```
-PRUNING="custom"
-PRUNING_KEEP_RECENT="100"
-PRUNING_INTERVAL="19"
-
-sed -i -e "s/^pruning *=.*/pruning = \"$PRUNING\"/" $HOME/.blockxd/config/app.toml
-sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \
-\"$PRUNING_KEEP_RECENT\"/" $HOME/.blockxd/config/app.toml
-sed -i -e "s/^pruning-interval *=.*/pruning-interval = \
-\"$PRUNING_INTERVAL\"/" $HOME/.blockxd/config/app.toml
+peers="4a7401f7d6daa39d331196d8cc179a4dcb11b5f9@143.198.110.221:26656,49a5a62543f5fec60db42b00d9ebe192c3185e15@143.198.97.96:26656,dccf886659c4afcb0cd4895ccd9f2804c7e7e1cd@143.198.101.61:26656"
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.blockxd/config/config.toml
+sed -i -e "s|^seeds *=.*|seeds = \"$SEEDS\"|" $HOME/.blockxd/config/config.toml
+```
+### Prunning
+```
+sed -i 's|^pruning *=.*|pruning = "custom"|g' $HOME/.blockxd/config/app.toml
+sed -i 's|^pruning-keep-recent  *=.*|pruning-keep-recent = "100"|g' $HOME/.blockxd/config/app.toml
+sed -i 's|^pruning-interval *=.*|pruning-interval = "10"|g' $HOME/.blockxd/config/app.toml
+sed -i 's|^snapshot-interval *=.*|snapshot-interval = 2000|g' $HOME/.blockxd/config/app.toml
+sed -i 's|^minimum-gas-prices *=.*|minimum-gas-prices = "0.0001abcx"|g' $HOME/.blockxd/config/app.toml
+sed -i 's|^prometheus *=.*|prometheus = true|' $HOME/.blockxd/config/config.toml
 ```
 
+### Indexer
+```
+sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.blockxd/config/config.toml
+```
 
-### create service file and start node
-
-Create service file
-Create a `blockxd.service` file in the `/etc/systemd/system` folder with the following code. 
-You can change `USER` with your Linux user name. You need sudo previlege to do this step.
-
+### Create Servive
 ```
 sudo tee /etc/systemd/system/blockxd.service > /dev/null << EOF
 [Unit]
-Description=blockx-testnet node service
+Description=Blockxd node
 After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=$(which cosmovisor) run start
-Restart=on-failure
-RestartSec=10
+ExecStart=$(which blockxd) start --home $HOME/.blockxd
+Restart=always
+RestartSec=3
 LimitNOFILE=65535
-Environment="DAEMON_HOME=$HOME/.blockxd"
-Environment="DAEMON_NAME=blockxd"
-Environment="UNSAFE_SKIP_BACKUP=true"
 
 [Install]
 WantedBy=multi-user.target
 EOF
-sudo systemctl daemon-reload
-sudo systemctl enable blockxd
 ```
 
-### Download Latest Snapshot
+### Statesync
 ```
-curl -L https://snapshots.indonode.net/blockx-t/blockx-t-snapshot.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.blockxd
-[[ -f $HOME/.blockxd/data/upgrade-info.json ]] && cp $HOME/.blockxd/data/upgrade-info.json $HOME/.blockxd/cosmovisor/genesis/upgrade-info.json
+SNAP_RPC=https://rpc.blockx.nodexcapital.com:443
+
+LATEST_HEIGHT=$(curl -s $SNAP_RPC/block | jq -r .result.block.header.height); \
+BLOCK_HEIGHT=$((LATEST_HEIGHT - 2000)); \
+TRUST_HASH=$(curl -s "$SNAP_RPC/block?height=$BLOCK_HEIGHT" | jq -r .result.block_id.hash)
+
+echo $LATEST_HEIGHT $BLOCK_HEIGHT $TRUST_HASH
+
+sed -i.bak -E "s|^(enable[[:space:]]+=[[:space:]]+).*$|\1true| ; \
+s|^(rpc_servers[[:space:]]+=[[:space:]]+).*$|\1\"$SNAP_RPC,$SNAP_RPC\"| ; \
+s|^(trust_height[[:space:]]+=[[:space:]]+).*$|\1$BLOCK_HEIGHT| ; \
+s|^(trust_hash[[:space:]]+=[[:space:]]+).*$|\1\"$TRUST_HASH\"| ; \
+s|^(seeds[[:space:]]+=[[:space:]]+).*$|\1\"\"|" $HOME/.blockxd/config/config.toml
 ```
 
-- Enable Service and Start Node
-
+### Reset Chain
 ```
-sudo systemctl restart blockxd
-sudo journalctl -fu blockxd -o cat
+blockxd tendermint unsafe-reset-all --home $HOME/.blockxd
+```
+
+### Start
+```
+systemctl daemon-reload
+systemctl enable blockxd
+systemctl restart blockxd
+journalctl -fu blockxd -ocat
 ```
 
 ### Create Validator
 
 Heads up to the Cheat Sheets to create validator
 
-<a href="https://www.indonode.net/testnet/blockx/cheat" target="_blank">
+<a href="https://service.sychonix.me/testnet/blockxnet/cheat" target="_blank">
   <button style="background-color: green; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 10px; box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);" onmouseover="this.style.boxShadow='0 0 0 4px rgba(0,255,0,0.5)'" onmouseout="this.style.boxShadow='0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)'">CLI Cheatsheets</button>
 </a>
