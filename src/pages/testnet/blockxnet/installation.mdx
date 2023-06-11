@@ -7,13 +7,13 @@ chain: blockx_12345-2
 version: 0.1.1-test
 ---
 
-### Update Package
+### Install dependencies
 ```
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev libleveldb-dev jq build-essential bsdmainutils git make ncdu htop screen unzip bc fail2ban htop -y
 ```
 
-### GO
+### Install GO
 ```
 ver="1.19.5"
 cd $HOME
@@ -26,13 +26,13 @@ source ~/.bash_profile
 go version
 ```
 
-### Binary
+### Build Binary
 ```
 curl -LO https://github.com/defi-ventures/blockx-node-public-compiled/releases/download/v9.0.0/blockxd
 chmod +x blockxd
 sudo mv ./blockxd /usr/local/bin
 ```
-### Config
+### Initialize the node
 ```
 blockxd init $MONIKER --chain-id blockx_12345-2
 blockxd config chain-id blockx_12345-2
