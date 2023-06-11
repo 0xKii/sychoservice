@@ -4,63 +4,31 @@ import { getCanonical, getHomePermalink } from '~/utils/permalinks';
 import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon';
 
-const name= 'Cascadia';
-const icon= 'cascadia';
-const network= 'Testnet';
-const chain= 'cascadia_6102-1';
-const version= 'v0.1.1';
-const stake= 'https://explorer.indonode.net/cascadia-testnet/staking/cascadiavaloper1v3th7fer2q0p0nmm5hgjj3n39a2qqar6dmsu52';
-const meta = {
-	title: SITE.title,
-	description: SITE.description,
-	canonical: getCanonical(getHomePermalink()),
-};
+const name= 'Cascadia'; 
+ const icon= 'cascadia'; 
+ const network= 'Testnet'; 
+ const chain= 'cascadia_6102-1'; 
+ const version= 'v0.1.1'; 
+ const stake= 'https://explorer.sychonix.me/cascadia-testnet/staking/cascadiavaloper1ygea4yqfhg0mg7k5604ghvj97sarc6p62qqxaq'; 
+ const meta = { 
+         title: SITE.title, 
+         description: SITE.description, 
+         canonical: getCanonical(getHomePermalink()),
+ };
 
 const items = [
 	{
-		title: 'Addrbook',
-		Link: 'https://indonode.net/testnet/cascadia/addrbook',
-	},
-	{
-		title: 'API Endpoints',
-		Link: 'https://indonode.net/testnet/cascadia/api',
-	},
-	{
 		title: 'Explorer',
-		Link: 'https://explorer.indonode.net/cascadia-testnet',
-	},
-	{
-		title: 'Genesis file',
-		Link: 'https://indonode.net/testnet/cascadia/genesis',
-	},
-	{
-		title: 'gRPC Endpoints',
-		Link: 'https://indonode.net/testnet/cascadia/grpc',
+		Link: 'https://explorer.sychonix.me/cascadia-testnet',
 	},
 	{
 		title: 'Node installation',
-		Link: 'https://indonode.net/testnet/cascadia/installation',
-	},
-	{
-		title: 'Peers',
-		Link: 'https://indonode.net/testnet/cascadia/peers',
-	},
-	{
-		title: 'RPC Endpoints',
-		Link: 'https://indonode.net/testnet/cascadia/rpc',
-	},
-	{
-		title: 'Statesync',
-		Link: 'https://indonode.net/testnet/cascadia/statesync',
-	},
-	{
-		title: 'Snapshot',
-		Link: 'https://indonode.net/testnet/cascadia/snapshot',
+		Link: 'https://service.sychonix.me/testnet/cascadia/installation',
 	},
 	{
 		title: 'CLI Cheatsheet',
-		Link: 'https://indonode.net/testnet/cascadia/cheat',
-	},		
+		Link: 'https://service.sychonix.me/testnet/cascadia/cheat',
+	},
 ]	
 ---
 
@@ -75,7 +43,7 @@ const items = [
 					</h1>
 					<a
 							class="btn bg-primary-400 w-1/4 items-center hover:bg-primary-400 font-bold md:pb-4"
-							href={stake}>Stake with us</a>
+							href={stake}>Stake with me</a>
 				</div>
 				<section class="bg-primary-100 dark:bg-slate-800 items-center">
 					<div class=" bg-transparent px-4 sm:px-6 py-4 text-md text-center font-medium">
