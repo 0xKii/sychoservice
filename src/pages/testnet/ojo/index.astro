@@ -4,59 +4,31 @@ import { getCanonical, getHomePermalink } from '~/utils/permalinks';
 import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon';
 
-const name= 'Ojo';
-const icon= 'ojo';
-const network= 'Testnet';
-const chain= 'ojo-devnet';
-const version= 'v0.1.2';
-const stake= 'https://explorer.indonode.net/ojo-testnet/staking';
-const meta = {
-	title: SITE.title,
-	description: SITE.description,
-	canonical: getCanonical(getHomePermalink()),
-};
+const name= 'Ojo'; 
+ const icon= 'ojo'; 
+ const network= 'Testnet'; 
+ const chain= 'ojo-devnet'; 
+ const version= 'v0.1.2'; 
+ const stake= 'https://explorer.sychonix.me/ojo-testnet/staking/ojovaloper1n9yenan0nuxrqfy85pyrg5qatuwcnraw4uh563'; 
+ const meta = { 
+         title: SITE.title, 
+         description: SITE.description, 
+         canonical: getCanonical(getHomePermalink()),
+ };
 
 const items = [
 	{
-		title: 'API Endpoints',
-		Link: 'https://indonode.net/testnet/ojo/api',
-	},
-	{
 		title: 'Explorer',
-		Link: 'https://explorer.indonode.net/ojo/staking',
-	},
-	{
-		title: 'Genesis file',
-		Link: 'https://indonode.net/testnet/ojo/genesis',
-	},
-	{
-		title: 'gRPC Endpoints',
-		Link: 'https://indonode.net/testnet/ojo/grpc',
+		Link: 'https://explorer.sychonix.me/ojo-testnet',
 	},
 	{
 		title: 'Node installation',
-		Link: 'https://indonode.net/testnet/ojo/installation',
-	},
-	{
-		title: 'Peers',
-		Link: 'https://indonode.net/testnet/ojo/peers',
-	},
-	{
-		title: 'RPC Endpoints',
-		Link: 'https://indonode.net/testnet/ojo/rpc',
-	},
-	{
-		title: 'Statesync',
-		Link: 'https://indonode.net/testnet/ojo/statesync',
-	},
-	{
-		title: 'Snapshot',
-		Link: 'https://indonode.net/testnet/ojo/snapshot',
+		Link: 'https://service.sychonix.me/testnet/ojo/installation',
 	},
 	{
 		title: 'CLI Cheatsheet',
-		Link: 'https://indonode.net/testnet/ojo/cheat',
-	},		
+		Link: 'https://service.sychonix.me/testnet/ojo/cheat',
+	},
 ]	
 ---
 
@@ -71,7 +43,7 @@ const items = [
 					</h1>
 					<a
 							class="btn bg-primary-400 w-1/4 items-center hover:bg-primary-400 font-bold md:pb-4"
-							href={stake}>Stake with us</a>
+							href={stake}>Stake with me</a>
 				</div>
 				<section class="bg-primary-100 dark:bg-slate-800 items-center">
 					<div class=" bg-transparent px-4 sm:px-6 py-4 text-md text-center font-medium">
