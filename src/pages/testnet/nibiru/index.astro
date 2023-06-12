@@ -4,59 +4,31 @@ import { getCanonical, getHomePermalink } from '~/utils/permalinks';
 import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon';
 
-const name= 'Nibiru';
-const icon= 'nibiru';
-const network= 'Testnet';
-const chain= 'nibiru-itn-1';
-const version= 'v0.19.2';
-const stake= 'https://explorer.indonode.net/nibiru-testnet/staking/nibivaloper1hh2u6pmpx40xhagqwf4dra778p5ajefvdztgwd';
-const meta = {
-	title: SITE.title,
-	description: SITE.description,
-	canonical: getCanonical(getHomePermalink()),
-};
+const name= 'Nibiru'; 
+ const icon= 'nibiru'; 
+ const network= 'Testnet'; 
+ const chain= 'nibiru-itn-1'; 
+ const version= 'v0.19.2'; 
+ const stake= 'https://nibiru.exploreme.pro/validator/nibivaloper1nyk5q9m58vaerthjv0lsrlq5cyxxj90rl3qss0'; 
+ const meta = { 
+         title: SITE.title, 
+         description: SITE.description, 
+         canonical: getCanonical(getHomePermalink()),
+ };
 
 const items = [
 	{
-		title: 'API Endpoints',
-		Link: 'https://indonode.net/testnet/nibiru/api',
-	},
-	{
 		title: 'Explorer',
-		Link: 'https://explorer.indonode.net/nibiru-testnet/staking',
-	},
-	{
-		title: 'Genesis file',
-		Link: 'https://indonode.net/testnet/nibiru/genesis',
-	},
-	{
-		title: 'gRPC Endpoints',
-		Link: 'https://indonode.net/testnet/nibiru/grpc',
+		Link: '#',
 	},
 	{
 		title: 'Node installation',
-		Link: 'https://indonode.net/testnet/nibiru/installation',
-	},
-	{
-		title: 'Peers',
-		Link: 'https://indonode.net/testnet/nibiru/peers',
-	},
-	{
-		title: 'RPC Endpoints',
-		Link: 'https://indonode.net/testnet/nibiru/rpc',
-	},
-	{
-		title: 'Statesync',
-		Link: 'https://indonode.net/testnet/nibiru/statesync',
-	},
-	{
-		title: 'Snapshot',
-		Link: 'https://indonode.net/testnet/nibiru/snapshot',
+		Link: 'https://service.sychonix.me/testnet/nibiru/installation',
 	},
 	{
 		title: 'CLI Cheatsheet',
-		Link: 'https://indonode.net/testnet/nibiru/cheat',
-	},		
+		Link: 'https://service.sychonix.me/testnet/nibiru/cheat',
+	},
 ]	
 ---
 
@@ -71,7 +43,7 @@ const items = [
 					</h1>
 					<a
 							class="btn bg-primary-400 w-1/4 items-center hover:bg-primary-400 font-bold md:pb-4"
-							href={stake}>Stake with us</a>
+							href={stake}>Stake with me</a>
 				</div>
 				<section class="bg-primary-100 dark:bg-slate-800 items-center">
 					<div class=" bg-transparent px-4 sm:px-6 py-4 text-md text-center font-medium">
