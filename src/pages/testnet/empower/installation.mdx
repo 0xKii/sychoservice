@@ -1,11 +1,19 @@
+---
+layout: '~/layouts/MarkdownLayout.astro'
+title: Installation Node
+network: Testnet
+icon: empower
+chain: circulus-1
+version: v1.0.0-rc1
+---
 
-### Update
+### Install dependencies
 ```
 sudo apt update && sudo apt upgrade -y && \
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
 ```
 
-### GO
+### Install GO
 ```
 ver="1.20.4"
 cd $HOME
@@ -18,28 +26,17 @@ source ~/.bash_profile
 go version
 ```
 
-### Binary
+### Build Binary
 ```
 cd $HOME
 git clone https://github.com/EmpowerPlastic/empowerchain.git
 cd empowerchain
-git checkout v1.0.0-rc1
-cd chain
-make install
-```
-### Update
-```
-cd $HOME/empowerchain
-git fetch --all
 git checkout v1.0.0-rc2
 cd chain
 make install
 ```
 
-### Init
-```
-MONIKER=
-```
+### Initialize the node
 ```
 empowerd init $MONIKER --chain-id circulus-1
 empowerd config chain-id circulus-1
