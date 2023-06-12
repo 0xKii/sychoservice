@@ -19,11 +19,12 @@ const {
 } = Astro.props;
 ---
 
-{ 
-   !(SITE?.defaultTheme && SITE.defaultTheme.endsWith(':only')) && ( 
-     <button type="button" class={className} aria-label={label} data-aw-toggle-color-scheme> 
-       {label}
-     </button> 
-   ) 
+{
+  !(SITE?.defaultTheme && SITE.defaultTheme.endsWith(':only')) && (
+    <button type="button" class={className} aria-label={label} data-aw-toggle-color-scheme>
+      <span>{label}</span>
+    </button>
+  )
 }
+
 
