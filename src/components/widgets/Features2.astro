@@ -44,7 +44,7 @@ const items = [
 			items.map(({ title, description, icon, Link }) => (
 			  <div class="relative flex flex-col p-6 bg-gray dark:bg-slate-900 rounded shadow-xl hover:shadow-lg transition dark:border dark:border-slate-800 text-center">
 				<a href={Link}>
-				  <Icon name={icon} class="w-12.5 h-12.5 mx-auto my-4 cursor-pointer transition duration-200 ease-in-out transform hover:scale-150" />
+				  <Icon name={icon} class="w-13 h-12 mx-auto my-4 cursor-pointer transition duration-200 ease-in-out transform hover:scale-150" />
 				</a>
 				<p class="text-black dark:text-black text-md font-semibold mt-2 relative">
 				  {title}
@@ -94,16 +94,13 @@ const items = [
 }*/
 
 .card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 24px;
-  text-align: center;
-  transition: transform 0.2s ease-in-out;
-}
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+  }
 
   .icon {
     background-color: #e5f6ff;
